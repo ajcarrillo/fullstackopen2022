@@ -1,7 +1,7 @@
 function Person({ person }) {
   return (
     <div>
-      <p>{person.name} {person.number}</p>
+      <span style={{ marginRight: '1rem' }}>{person.name} {person.number}</span>
     </div>
   )
 }

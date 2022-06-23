@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -12,7 +12,7 @@ function App() {
   const [newFilter, setNewFilter] = useState('')
 
   const fetchPersons = () => {
-    axios.get('http://localhost:3001/persons')
+    personService.getAll()
       .then(response => {
         setPersons(response.data)
       })
@@ -43,13 +43,32 @@ function App() {
     event.preventDefault()
     const person = { name: newName, number: newNumber }
     if (persons.find(p => p.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        personService.update(persons.find(p => p.name === newName).id, person)
+          .then(response => {
+            setPersons(persons.map(p => p.id === response.data.id ? response.data : p))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     } else {
-      setPersons(persons.concat(person))
-      setNewName('')
-      setNewNumber('')
+      personService.create(person)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
     }
   }
+
+  /*const handleDelete = (id) => () => {
+    if (window.confirm("Confirm delete?")) {
+      personService.deletePerson(id)
+        .then(response => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
+  }*/
 
   return (
     <div>
@@ -67,7 +86,10 @@ function App() {
         numberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons}/>
+      <Persons
+        persons={persons}
+        setPersons={setPersons}
+      />
     </div>
   )
 }
