@@ -4,12 +4,18 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 function App() {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState({
+    message: '',
+    type: '',
+    show: false
+  })
 
   const fetchPersons = () => {
     personService.getAll()
@@ -49,6 +55,32 @@ function App() {
             setPersons(persons.map(p => p.id === response.data.id ? response.data : p))
             setNewName('')
             setNewNumber('')
+            setNotificationMessage({
+              message: `Updated ${response.data.name}`,
+              type: 'success',
+              show: true
+            })
+            setTimeout(() => {
+              setNotificationMessage({
+                message: '',
+                type: '',
+                show: false
+              })
+            }, 5000)
+          })
+          .catch(error => {
+            setNotificationMessage({
+              message: `${person.name} has already been deleted from server`,
+              type: 'error',
+              show: true
+            })
+            setTimeout(() => {
+              setNotificationMessage({
+                message: '',
+                type: '',
+                show: false
+              })
+            }, 5000)
           })
       }
     } else {
@@ -57,6 +89,18 @@ function App() {
           setPersons(persons.concat(response.data))
           setNewName('')
           setNewNumber('')
+          setNotificationMessage({
+            message: `Added ${newName}`,
+            type: 'success',
+            show: true
+          })
+          setTimeout(() => {
+            setNotificationMessage({
+              message: '',
+              type: '',
+              show: false
+            })
+          }, 5000)
         })
     }
   }
@@ -73,6 +117,13 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      {
+        notificationMessage.show && <Notification
+          message={notificationMessage.message}
+          type={notificationMessage.type}
+        />
+      }
+
       <Filter
         filter={newFilter}
         onChange={handleFilterChange}
