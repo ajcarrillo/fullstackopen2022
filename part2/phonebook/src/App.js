@@ -102,6 +102,20 @@ function App() {
             })
           }, 5000)
         })
+        .catch(error => {
+          setNotificationMessage({
+            message: error.response.data.error,
+            type: 'error',
+            show: true
+          })
+          setTimeout(() => {
+            setNotificationMessage({
+              message: '',
+              type: '',
+              show: false
+            })
+          }, 5000)
+        })
     }
   }
 
