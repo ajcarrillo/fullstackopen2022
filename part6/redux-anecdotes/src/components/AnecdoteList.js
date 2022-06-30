@@ -1,12 +1,10 @@
 import { useSelector, useDispatch } from "react-redux"
-import { vote } from "../reducers/anecdoteReducer"
+import { updateAnecdote } from "../reducers/anecdoteReducer"
 import { setNotification } from "../reducers/notificationReducer"
-import { clearNotification } from "../reducers/notificationReducer"
 import FilterForm from "./FilterForm"
 
 function AnecdoteList() {
   const anecdotes = useSelector(({ filter, anecdotes }) => {
-    console.log(anecdotes)
     if (anecdotes.length === 0) {
       return []
     }
@@ -17,11 +15,8 @@ function AnecdoteList() {
   const dispatch = useDispatch()
 
   const voteFor = (anecdote) => {
-    dispatch(vote(anecdote.id))
+    dispatch(updateAnecdote(anecdote))
     dispatch(setNotification(`you voted for '${anecdote.content}'`))
-    setTimeout(() => {
-      dispatch(clearNotification())
-    }, 3000)
   }
 
   return (

@@ -3,7 +3,7 @@ import AnecdoteForm from "./components/AnecdoteForm"
 import Notification from "./components/Notification"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import anecdotesService from "./services/anecdotes"
+import { setAnecdotes } from "./reducers/anecdoteReducer"
 
 const App = () => {
   const notification = useSelector((state) => state.notification.notification)
@@ -11,9 +11,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    anecdotesService.getAll().then((anecdotes) => {
-      dispatch({ type: "SET_ANECDOTES", data: anecdotes })
-    })
+    dispatch(setAnecdotes())
   }, [dispatch])
 
   return (

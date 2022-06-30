@@ -1,13 +1,4 @@
-const anecdotesAtStart = [
-  "If it hurts, do it more often",
-  "Adding manpower to a late software project makes it later!",
-  "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
-  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-  "Premature optimization is the root of all evil.",
-  "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0)
+import anecdotesService from "../services/anecdotes"
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -24,6 +15,13 @@ const reducer = (state = [], action) => {
       return anecdotes.sort((a, b) => b.votes - a.votes)
     case "SET_ANECDOTES":
       return action.data.sort((a, b) => b.votes - a.votes)
+    case "UPDATE_ANECDOTE":
+      const updatedAnecdote = action.data
+      return state
+        .map((anecdote) => {
+          return anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
+        })
+        .sort((a, b) => b.votes - a.votes)
     default:
       return state
   }
@@ -37,16 +35,33 @@ export const vote = (id) => {
 }
 
 export const createNewAnecdote = (anecdote) => {
-  return {
-    type: "CREATE",
-    data: anecdote,
+  return async (dispatch) => {
+    const newAnecdote = await anecdotesService.create(anecdote)
+    dispatch({
+      type: "CREATE",
+      data: newAnecdote,
+    })
   }
 }
 
-export const setAnecdotes = (anecdotes) => {
-  return {
-    type: "SET_ANECDOTES",
-    data: anecdotes,
+export const setAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdotesService.getAll()
+    dispatch({
+      type: "SET_ANECDOTES",
+      data: anecdotes,
+    })
+  }
+}
+
+export const updateAnecdote = (anecdote) => {
+  anecdote.votes = anecdote.votes + 1
+  return async (dispatch) => {
+    const updatedAnecdote = await anecdotesService.update(anecdote.id, anecdote)
+    dispatch({
+      type: "UPDATE_ANECDOTE",
+      data: updatedAnecdote,
+    })
   }
 }
 
