@@ -1,23 +1,35 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useField } from "../../hooks"
 
 const CreateAnecdote = (props) => {
   const navigate = useNavigate()
-  const [content, setContent] = useState("")
-  const [author, setAuthor] = useState("")
-  const [info, setInfo] = useState("")
+  // const [content, setContent] = useState("")
+  // const [author, setAuthor] = useState("")
+  // const [info, setInfo] = useState("")
+  const content = useField("text")
+  const author = useField("text")
+  const url = useField("text")
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      url: url.value,
       votes: 0,
     })
-    props.sendNotification(`Anecdote ${content} created!`)
+    props.sendNotification(`Anecdote ${content.value} created!`)
     navigate("/")
   }
+
+  const resetButton = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    url.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -26,27 +38,33 @@ const CreateAnecdote = (props) => {
           content
           <input
             name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            type={content.type}
+            value={content.value}
+            onChange={content.onChange}
           />
         </div>
         <div>
           author
           <input
             name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            type={author.type}
+            value={author.value}
+            onChange={author.onChange}
           />
         </div>
         <div>
           url for more info
           <input
             name="url"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
+            type={url.type}
+            value={url.value}
+            onChange={url.onChange}
           />
         </div>
         <button>create</button>
+        <button type="reset" onClick={resetButton}>
+          reset
+        </button>
       </form>
     </div>
   )
