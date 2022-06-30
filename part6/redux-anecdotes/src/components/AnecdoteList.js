@@ -6,6 +6,10 @@ import FilterForm from "./FilterForm"
 
 function AnecdoteList() {
   const anecdotes = useSelector(({ filter, anecdotes }) => {
+    console.log(anecdotes)
+    if (anecdotes.length === 0) {
+      return []
+    }
     return anecdotes.filter((a) =>
       a.content.toLowerCase().includes(filter.term.toLowerCase())
     )
