@@ -1,12 +1,27 @@
-import PropTypes from "prop-types"
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { loggedUser, login } from "../features/users/usersSlice"
 
-const LoginForm = ({
-  onSubmit,
-  username,
-  password,
-  setUsername,
-  setPassword,
-}) => {
+const LoginForm = () => {
+  const dispatch = useDispatch()
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      dispatch(loggedUser(user))
+    }
+  }, [])
+
+  const onSubmit = async (event) => {
+    event.preventDefault()
+    dispatch(login({ username, password }))
+    setUsername("")
+    setPassword("")
+  }
+
   return (
     <div>
       <h2>Login</h2>
@@ -37,14 +52,6 @@ const LoginForm = ({
       </form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
 }
 
 export default LoginForm
