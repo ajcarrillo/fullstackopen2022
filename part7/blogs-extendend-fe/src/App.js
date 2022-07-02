@@ -8,17 +8,17 @@ import Togglable from "./components/Togglable"
 import BlogDetail from "./components/BlogDetail"
 import blogService from "./services/blogs"
 import loginServices from "./services/login"
+import { useSelector, useDispatch } from "react-redux"
+import { showNotification } from "./features/notifications/notificationsSlice"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState({
-    message: "",
-    type: "",
-    show: false,
-  })
+
+  const notification = useSelector((state) => state.notification)
+  const dispatch = useDispatch()
 
   const blogFormRef = useRef()
 
@@ -50,18 +50,7 @@ const App = () => {
       setPassword("")
     } catch (exception) {
       console.log(exception)
-      setNotificationMessage({
-        message: "Wrong username or password",
-        type: "error",
-        show: true,
-      })
-      setTimeout(() => {
-        setNotificationMessage({
-          message: "",
-          type: "",
-          show: false,
-        })
-      }, 5000)
+      dispatch(showNotification("wrong username or password", "error"))
     }
   }
 
@@ -74,18 +63,12 @@ const App = () => {
     const blog = await blogService.create(newBlog)
     setBlogs(blogs.concat(blog))
     blogFormRef.current.toggleVisibility()
-    setNotificationMessage({
-      message: `a new blog ${blog.title} by ${blog.author} added`,
-      type: "success",
-      show: true,
-    })
-    setTimeout(() => {
-      setNotificationMessage({
-        message: "",
-        type: "",
-        show: false,
-      })
-    }, 5000)
+    dispatch(
+      showNotification(
+        `a new blog ${blog.title} by ${blog.author} added`,
+        "success"
+      )
+    )
   }
 
   const handleLike = (id) => async () => {
@@ -100,18 +83,12 @@ const App = () => {
         setBlogs(blogs.filter((b) => b.id !== blog.id))
       } catch (error) {
         if (error.response.status === 401) {
-          setNotificationMessage({
-            message: "You are not authorized to delete this blog",
-            type: "error",
-            show: true,
-          })
-          setTimeout(() => {
-            setNotificationMessage({
-              message: "",
-              type: "",
-              show: false,
-            })
-          }, 5000)
+          dispatch(
+            showNotification(
+              "You are not authorized to delete this blog",
+              "error"
+            )
+          )
         }
       }
     }
@@ -129,11 +106,8 @@ const App = () => {
           onSubmit={handleLogin}
         />
       )}
-      {notificationMessage.show && (
-        <Notification
-          message={notificationMessage.message}
-          type={notificationMessage.type}
-        />
+      {notification.message && (
+        <Notification message={notification.message} type={notification.type} />
       )}
       {user !== null && (
         <div>
