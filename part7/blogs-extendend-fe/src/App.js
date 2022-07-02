@@ -10,24 +10,22 @@ import blogService from "./services/blogs"
 import loginServices from "./services/login"
 import { useSelector, useDispatch } from "react-redux"
 import { showNotification } from "./features/notifications/notificationsSlice"
+import { fetchBlogs } from "./features/blogs/blogsSlice"
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  // const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
 
   const notification = useSelector((state) => state.notification)
-  const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blog)
 
   const blogFormRef = useRef()
 
   useEffect(() => {
-    async function fetchBlog() {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    }
-    fetchBlog()
+    dispatch(fetchBlogs())
   }, [])
 
   useEffect(() => {
@@ -59,41 +57,6 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser")
   }
 
-  const handleCreateBlog = async (newBlog) => {
-    const blog = await blogService.create(newBlog)
-    setBlogs(blogs.concat(blog))
-    blogFormRef.current.toggleVisibility()
-    dispatch(
-      showNotification(
-        `a new blog ${blog.title} by ${blog.author} added`,
-        "success"
-      )
-    )
-  }
-
-  const handleLike = (id) => async () => {
-    const blog = await blogService.likeBlog(id)
-    setBlogs(blogs.map((b) => (b.id !== id ? b : blog)))
-  }
-
-  const handleDelete = (blog) => async () => {
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
-      try {
-        await blogService.deleteBlog(blog.id)
-        setBlogs(blogs.filter((b) => b.id !== blog.id))
-      } catch (error) {
-        if (error.response.status === 401) {
-          dispatch(
-            showNotification(
-              "You are not authorized to delete this blog",
-              "error"
-            )
-          )
-        }
-      }
-    }
-  }
-
   return (
     <div>
       <h1>Blogs</h1>
@@ -113,15 +76,11 @@ const App = () => {
         <div>
           <UserInfo user={user} handleLogout={handleLogout} />
           <Togglable buttonLabel={"Creates new blog"} ref={blogFormRef}>
-            <BlogForm createBlog={handleCreateBlog} />
+            <BlogForm blogFormRef={blogFormRef} />
           </Togglable>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog}>
-              <BlogDetail
-                blog={blog}
-                like={handleLike}
-                deleteBlog={handleDelete}
-              />
+              <BlogDetail blog={blog} />
             </Blog>
           ))}
         </div>
