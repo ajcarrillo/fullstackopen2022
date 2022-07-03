@@ -33,6 +33,18 @@ const deleteBlog = async (id) => {
   return response.data
 }
 
-const blogServices = { getAll, setToken, create, likeBlog, deleteBlog }
+const commentBlog = async (id, comment) => {
+  const response = await axios.put(`${baseUrl}/${id}/comments`, { comment })
+  return response.data
+}
+
+const blogServices = {
+  getAll,
+  setToken,
+  create,
+  likeBlog,
+  deleteBlog,
+  commentBlog,
+}
 
 export default blogServices

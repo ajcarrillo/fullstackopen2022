@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { fetchBlogs } from "../features/blogs/blogsSlice"
 import { useEffect } from "react"
 import Blog from "../components/Blog"
-import BlogDetail from "../components/BlogDetail"
 import { Container, Row, Col } from "react-bootstrap"
 
 const BlogList = () => {
