@@ -6,7 +6,7 @@ import UserInfo from "./UserInfo"
 const Navigation = () => {
   const navigation = [
     { name: "Blogs", path: "/blogs", current: true },
-    { name: "Users", path: "/blogs", current: false },
+    { name: "Users", path: "/users", current: false },
     { name: "Create new blog", path: "/blogs/create", current: false },
     { name: "Login", path: "/login", current: false },
   ]

@@ -5,6 +5,8 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import BlogList from "./pages/BlogList"
 import CreateBlog from "./pages/CreateBlog"
 import Navigation from "./components/Navigation"
+import UserList from "./pages/UserList"
+import ViewUser from "./pages/ViewUser"
 
 const App = () => {
   const notification = useSelector((state) => state.notification)
@@ -37,6 +39,8 @@ const App = () => {
             currentUser.token ? <Navigate to="/blogs" replace /> : <LoginForm />
           }
         ></Route>
+        <Route path="/users" element={<UserList />} />
+        <Route path="/users/:id" element={<ViewUser />} />
         {/* <UserInfo />
             <Togglable buttonLabel={"Creates new blog"} ref={blogFormRef}>
               <BlogForm blogFormRef={blogFormRef} />
