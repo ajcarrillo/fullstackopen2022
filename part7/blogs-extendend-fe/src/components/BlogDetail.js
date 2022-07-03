@@ -2,9 +2,12 @@ import { useDispatch } from "react-redux"
 import PropTypes from "prop-types"
 import { votedBlog, removeBlog } from "../features/blogs/blogsSlice"
 import { showNotification } from "../features/notifications/notificationsSlice"
+import { Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 const BlogDetail = ({ blog }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleLike = (id) => async () => {
     dispatch(votedBlog(id))
@@ -14,6 +17,7 @@ const BlogDetail = ({ blog }) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
       try {
         dispatch(removeBlog(blog.id))
+        navigate("/blogs")
       } catch (error) {
         if (error.response.status === 401) {
           dispatch(
@@ -32,14 +36,14 @@ const BlogDetail = ({ blog }) => {
       <p>{blog.url}</p>
       <p>
         <span>{blog.likes}</span>{" "}
-        <button id="btn-like" onClick={handleLike(blog.id)}>
+        <Button variant="primary" id="btn-like" onClick={handleLike(blog.id)}>
           like
-        </button>
+        </Button>
       </p>
       <p>{blog.user.name}</p>
-      <button id="delete-button" onClick={handleDelete(blog)}>
+      <Button variant="danger" id="delete-button" onClick={handleDelete(blog)}>
         remove
-      </button>
+      </Button>
     </div>
   )
 }

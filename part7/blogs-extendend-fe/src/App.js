@@ -7,6 +7,7 @@ import CreateBlog from "./pages/CreateBlog"
 import Navigation from "./components/Navigation"
 import UserList from "./pages/UserList"
 import ViewUser from "./pages/ViewUser"
+import ViewBlog from "./pages/ViewBlog"
 
 const App = () => {
   const notification = useSelector((state) => state.notification)
@@ -22,6 +23,12 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Navigate replace to="/blogs" />}></Route>
+        <Route
+          path="/login"
+          element={
+            currentUser.token ? <Navigate to="/blogs" replace /> : <LoginForm />
+          }
+        ></Route>
         <Route path="/blogs" element={<BlogList />}></Route>
         <Route
           path="/blogs/create"
@@ -33,12 +40,7 @@ const App = () => {
             )
           }
         ></Route>
-        <Route
-          path="/login"
-          element={
-            currentUser.token ? <Navigate to="/blogs" replace /> : <LoginForm />
-          }
-        ></Route>
+        <Route path="/blogs/:id" element={<ViewBlog />}></Route>
         <Route path="/users" element={<UserList />} />
         <Route path="/users/:id" element={<ViewUser />} />
         {/* <UserInfo />

@@ -24,9 +24,7 @@ const BlogList = () => {
         {blogs.map((blog) => (
           <Row key={blog.id}>
             <Col>
-              <Blog blog={blog}>
-                <BlogDetail blog={blog} />
-              </Blog>
+              <Blog blog={blog} />
             </Col>
           </Row>
         ))}

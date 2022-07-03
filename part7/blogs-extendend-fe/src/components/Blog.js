@@ -1,8 +1,9 @@
 import "../assets/css/blogs.css"
 import { useState } from "react"
 import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
 
-const Blog = ({ blog, children }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? "block" : "none" }
@@ -13,15 +14,7 @@ const Blog = ({ blog, children }) => {
 
   return (
     <div className="blog">
-      <span>
-        {blog.title} {blog.author}
-      </span>{" "}
-      <button id="btn-show-details" onClick={toggleVisibility}>
-        view
-      </button>
-      <div className="togglableBlogDetails" style={hideWhenVisible}>
-        {children}
-      </div>
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
     </div>
   )
 }
