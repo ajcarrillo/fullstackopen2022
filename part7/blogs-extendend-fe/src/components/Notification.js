@@ -1,8 +1,16 @@
-import "../assets/css/notifications.css"
+import { Alert, Container, Row, Col } from "react-bootstrap"
 import PropTypes from "prop-types"
 
 const Notification = ({ message, type }) => {
-  return <div className={`notification ${type}`}>{message}</div>
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <Alert variant={type}>{message}</Alert>
+        </Col>
+      </Row>
+    </Container>
+  )
 }
 
 Notification.propTypes = {

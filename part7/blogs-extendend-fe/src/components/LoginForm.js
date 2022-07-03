@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { loggedUser, login } from "../features/users/usersSlice"
+import { Container, Row, Col, Form, Button } from "react-bootstrap"
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -13,7 +14,7 @@ const LoginForm = () => {
       const user = JSON.parse(loggedUserJSON)
       dispatch(loggedUser(user))
     }
-  }, [])
+  }, [dispatch])
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -24,32 +25,47 @@ const LoginForm = () => {
 
   return (
     <div>
-      <h2>Login</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          username
-          <input
-            id="username"
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            id="password"
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
-      </form>
+      <Container>
+        <Row>
+          <Col>
+            <h2>Login</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form onSubmit={onSubmit}>
+              <Form.Group>
+                <Form.Label>Username:</Form.Label>
+                <Form.Control
+                  id="username"
+                  type="text"
+                  value={username}
+                  name="Username"
+                  onChange={({ target }) => setUsername(target.value)}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  id="password"
+                  type="password"
+                  value={password}
+                  name="Password"
+                  onChange={({ target }) => setPassword(target.value)}
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                id="login-button"
+                type="submit"
+                className="mt-4"
+              >
+                Login
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     </div>
   )
 }
