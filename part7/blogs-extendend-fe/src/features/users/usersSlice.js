@@ -50,5 +50,16 @@ export const fetchAllUsers = () => async (dispatch) => {
   dispatch(initializeUsers(users))
 }
 
+export const checkIfLoggedIn = () => (dispatch) => {
+  const loggedInUserJSON = window.localStorage.getItem("loggedBlogappUser")
+
+  if (loggedInUserJSON) {
+    const user = JSON.parse(loggedInUserJSON)
+    dispatch(loggedUser(user))
+  } else {
+    dispatch(removeLoggedUser())
+  }
+}
+
 export const { setUser, clearLoggedUser, initializeUsers } = userSlice.actions
 export default userSlice.reducer

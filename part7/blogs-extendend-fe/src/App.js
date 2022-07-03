@@ -8,11 +8,19 @@ import Navigation from "./components/Navigation"
 import UserList from "./pages/UserList"
 import ViewUser from "./pages/ViewUser"
 import ViewBlog from "./pages/ViewBlog"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { checkIfLoggedIn } from "./features/users/usersSlice"
 
 const App = () => {
+  const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
   const user = useSelector((state) => state.user)
   const currentUser = user.user || null
+
+  useEffect(() => {
+    dispatch(checkIfLoggedIn())
+  }, [dispatch])
 
   return (
     <div>

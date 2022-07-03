@@ -13,7 +13,6 @@ const Navigation = () => {
 
   const user = useSelector((state) => state.user)
   const currentUser = user.user || null
-  console.log(currentUser)
 
   return (
     <div>
