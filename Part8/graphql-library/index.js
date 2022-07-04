@@ -105,6 +105,7 @@ const typeDefs = gql`
   }
 
   type Author {
+    id: String
     name: String
     born: Int
     bookCount: Int
@@ -140,8 +141,13 @@ const resolvers = {
     bookCount: (author) => books.filter((b) => b.author === author.name).length,
   },
   Mutation: {
-    addBook: (root, args) => {
+    addBook: async (root, args) => {
       const book = { ...args, id: uuid() }
+      const author = authors.find((a) => a.name === args.author)
+      if (!author) {
+        const newAuthor = { name: args.author, id: uuid() }
+        authors = [...authors, newAuthor]
+      }
       books.push(book)
       return book
     },
