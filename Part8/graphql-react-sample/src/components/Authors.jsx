@@ -3,7 +3,7 @@ import Select from "react-select"
 import { useMutation } from "@apollo/client"
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "../queries/authorQueries"
 
-function Authors({ authors, setNotification }) {
+function Authors({ authors, setNotification, token }) {
   const [selectedAuthor, setSelectedAuthor] = useState(null)
   const [born, setBorn] = useState("")
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
@@ -62,24 +62,28 @@ function Authors({ authors, setNotification }) {
           ))}
         </tbody>
       </table>
-      <h2>Set birthday</h2>
-      <Select
-        defaultValue={selectedAuthor}
-        onChange={setSelectedAuthor}
-        options={options}
-      />
-      {selectedAuthor && (
-        <form onSubmit={setBirthday}>
-          <div>
-            <label htmlFor="born">Born</label>
-            <input
-              type="number"
-              name="born"
-              onChange={({ target }) => setBorn(target.value)}
-            />
-          </div>
-          <button type="submit">Set birthday</button>
-        </form>
+      {token && (
+        <>
+          <h2>Set birthday</h2>
+          <Select
+            defaultValue={selectedAuthor}
+            onChange={setSelectedAuthor}
+            options={options}
+          />
+          {selectedAuthor && (
+            <form onSubmit={setBirthday}>
+              <div>
+                <label htmlFor="born">Born</label>
+                <input
+                  type="number"
+                  name="born"
+                  onChange={({ target }) => setBorn(target.value)}
+                />
+              </div>
+              <button type="submit">Set birthday</button>
+            </form>
+          )}
+        </>
       )}
     </div>
   )
