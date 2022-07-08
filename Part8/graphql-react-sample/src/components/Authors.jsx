@@ -3,11 +3,25 @@ import Select from "react-select"
 import { useMutation } from "@apollo/client"
 import { UPDATE_AUTHOR, ALL_AUTHORS } from "../queries/authorQueries"
 
-function Authors({ authors }) {
+function Authors({ authors, setNotification }) {
   const [selectedAuthor, setSelectedAuthor] = useState(null)
   const [born, setBorn] = useState("")
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      if (typeof error.graphQLErrors[0] !== "undefined") {
+        setNotification({
+          message: error.graphQLErrors[0].message,
+          type: "error",
+        })
+      } else {
+        console.log("error", error)
+        setNotification({
+          message: "Something went wrong",
+          type: "error",
+        })
+      }
+    },
   })
   const options = authors.map((author) => ({
     value: author.name,

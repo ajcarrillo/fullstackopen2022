@@ -2,18 +2,13 @@ import { useState } from "react"
 import { ADD_BOOK, ALL_BOOKS } from "../queries/bookQueries"
 import { ALL_AUTHORS } from "../queries/authorQueries"
 import { useMutation } from "@apollo/client"
-import Notification from "./Notification/Notification"
 
-const BookForm = () => {
+const BookForm = ({ setNotification }) => {
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [published, setPublished] = useState("")
   const [genres, setGenres] = useState([])
   const [genre, setGenre] = useState("")
-  const [notification, setNotification] = useState({
-    message: null,
-    type: null,
-  })
   const [addBook, { data, loading, error }] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     onError: (error) => {
@@ -60,7 +55,6 @@ const BookForm = () => {
 
   return (
     <>
-      <Notification notification={notification} />
       <form onSubmit={submit}>
         <div>
           <label htmlFor="title">Title</label>
