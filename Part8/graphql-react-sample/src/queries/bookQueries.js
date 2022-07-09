@@ -33,3 +33,28 @@ export const ADD_BOOK = gql`
     }
   }
 `
+
+export const BOOK_ADDED_SUBSCRIPTION = gql`
+  subscription {
+    bookAdded {
+      title
+      author {
+        name
+      }
+      published
+      genres
+    }
+  }
+`
+
+export const updateCache = (cache, query, newBook) => {
+  console.log("updateCache", query, newBook, cache)
+  cache.updateQuery(query, (data) => {
+    if (!data) {
+      return
+    }
+    return {
+      allBooks: data.allBooks.concat(newBook),
+    }
+  })
+}

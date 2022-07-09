@@ -1,9 +1,13 @@
-import { useQuery, useApolloClient } from "@apollo/client"
+import { useQuery, useApolloClient, useSubscription } from "@apollo/client"
 import Authors from "./components/Authors"
 import Books from "./components/Books"
 import { useState, useEffect } from "react"
 import { ALL_AUTHORS } from "./queries/authorQueries"
-import { ALL_BOOKS } from "./queries/bookQueries"
+import {
+  ALL_BOOKS,
+  BOOK_ADDED_SUBSCRIPTION,
+  updateCache,
+} from "./queries/bookQueries"
 import BookForm from "./components/BookForm"
 import Notification from "./components/Notification/Notification"
 import LoginForm from "./components/LoginForm"
@@ -33,6 +37,19 @@ const App = () => {
     localStorage.clear()
     client.resetStore()
   }
+
+  useSubscription(BOOK_ADDED_SUBSCRIPTION, {
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      const book = subscriptionData.data.bookAdded
+      if (book.genres.length > 0) {
+        setNotification({
+          message: `${book.title} added`,
+          type: "success",
+        })
+      }
+      updateCache(client.cache, { query: ALL_BOOKS }, book)
+    },
+  })
 
   if (authors.loading) {
     return <div>Loading...</div>
