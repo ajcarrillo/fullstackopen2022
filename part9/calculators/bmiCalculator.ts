@@ -32,7 +32,7 @@ const parseArguments = (args: Array<string>): IBmiValues => {
   return validateArgs(height, weight);
 }
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): string => {
   const bmiValues = validateArgs(height, weight);
   const bmi = bmiValues.weight / (bmiValues.height / 100) ** 2;
   return checkBmi(bmi);
