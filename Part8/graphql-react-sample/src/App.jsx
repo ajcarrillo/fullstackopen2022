@@ -8,6 +8,7 @@ import BookForm from "./components/BookForm"
 import Notification from "./components/Notification/Notification"
 import LoginForm from "./components/LoginForm"
 import LogoutButton from "./components/LogoutButton"
+import Recommendations from "./components/Recommendations"
 
 const App = () => {
   const client = useApolloClient()
@@ -59,6 +60,7 @@ const App = () => {
           setPage={setPage}
         />
       )}
+      {page === "recommendations" && <Recommendations />}
     </div>
   )
 }

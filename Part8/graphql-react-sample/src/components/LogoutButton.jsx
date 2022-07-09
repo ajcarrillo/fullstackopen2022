@@ -5,6 +5,7 @@ const LogoutButton = ({ logout, token, setPage }) => {
   return (
     <>
       <button onClick={() => setPage("addBook")}>add book</button>
+      <button onClick={() => setPage("recommendations")}>recommend</button>
       <button onClick={logout}>logout</button>
     </>
   )

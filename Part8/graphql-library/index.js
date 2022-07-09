@@ -74,10 +74,10 @@ const resolvers = {
     allBooks: async (root, args) => {
       if (args.author) {
         const author = await Author.findOne({ name: args.author })
-        return Book.find({ author: author.id })
+        return Book.find({ author: author.id }).populate("author")
       }
       if (args.genre) {
-        return Book.find({ genres: args.genre })
+        return Book.find({ genres: args.genre }).populate("author")
       }
       return await Book.find({}).populate("author")
     },
