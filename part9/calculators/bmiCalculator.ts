@@ -26,8 +26,8 @@ const parseArguments = (args: Array<string>): IBmiValues => {
   if (args.length < 4) throw new Error("Not enough arguments")
   if (args.length > 4) throw new Error("Too many arguments")
 
-  const height: number = Number(args[2])
-  const weight: number = Number(args[3])
+  const height = Number(args[2])
+  const weight = Number(args[3])
 
   return validateArgs(height, weight);
 }

@@ -17,7 +17,7 @@ const parseExercisesArguments = (args: Array<string>): IExerciseParams => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length > 12) throw new Error("Too many arguments");
 
-  const targetHours: number = Number(args[2]);
+  const targetHours = Number(args[2]);
   const dailyHours: Array<number> = args.slice(3).map(Number);
 
   return {
@@ -26,7 +26,7 @@ const parseExercisesArguments = (args: Array<string>): IExerciseParams => {
   };
 }
 
-const calculateExercises = (targetHours: number, dailyHours: Array<number>): IExerciseResult => {
+export const calculateExercises = (targetHours: number, dailyHours: Array<number>): IExerciseResult => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter(hour => hour > 0).length;
   const average = dailyHours.reduce((acc, curr) => acc + curr, 0) / periodLength;
