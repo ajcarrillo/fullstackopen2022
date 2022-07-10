@@ -1,15 +1,6 @@
+import {v1 as uuid} from 'uuid'
 import patientsData from "../../data/patients.json";
-
-export type Gender = "male" | "female"
-
-export interface IPatient {
-  id?: string
-  name: string
-  dateOfBirth: string
-  ssn: string
-  gender: Gender
-  occupation: string
-}
+import {IPatient, NewPatient} from "../types";
 
 const patients: Array<IPatient> = patientsData as Array<IPatient>
 
@@ -17,6 +8,16 @@ const getPatients = (): Array<IPatient> => {
   return patients;
 }
 
+const addPatient = (patient: NewPatient): IPatient => {
+  const newPatient: IPatient = {
+    id: uuid(),
+    ...patient
+  }
+  patients.push(newPatient);
+  return newPatient;
+}
+
 export default {
-  getPatients
+  getPatients,
+  addPatient
 }

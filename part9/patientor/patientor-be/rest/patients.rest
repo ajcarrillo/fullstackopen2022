@@ -1,1 +1,14 @@
 GET http://localhost:3001/api/patients
+
+###
+
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "ANDRES CARRILLO",
+  "dateOfBirth": "1985-04-28",
+  "ssn": "123654",
+  "gender": "male",
+  "occupation": "Developer"
+}
