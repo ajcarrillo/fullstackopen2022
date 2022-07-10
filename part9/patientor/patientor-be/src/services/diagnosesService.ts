@@ -1,4 +1,4 @@
-import diagnosesData from "../../data/diagnoses.json";
+import diagnosesData from "../../data/diagnoses";
 
 export interface IDiagnosis {
   code: string
@@ -6,11 +6,9 @@ export interface IDiagnosis {
   latin?: string
 }
 
-const diagnoses: Array<IDiagnosis> = diagnosesData as Array<IDiagnosis>;
-
 const getDiagnoses = (): Array<IDiagnosis> => {
-  return diagnoses;
+  return diagnosesData;
 }
 
-export default {getDiagnoses}
+export default { getDiagnoses }
 

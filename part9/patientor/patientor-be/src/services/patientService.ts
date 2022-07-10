@@ -1,5 +1,5 @@
 import { v1 as uuid } from 'uuid'
-import patientsData from "../../data/patients.json";
+import patientsData from "../../data/patients";
 import { IPatient, NewPatient, PublicPatient } from "../types";
 
 const patients: Array<IPatient> = patientsData as Array<IPatient>

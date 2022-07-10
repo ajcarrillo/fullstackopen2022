@@ -1,4 +1,4 @@
-import {Gender, NewPatient} from './types';
+import { Entry, Gender, NewPatient } from './types';
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -12,6 +12,18 @@ const isDate = (date: string): boolean => {
 const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isArray = (param: any): boolean => {
+  return typeof param === 'object' && param instanceof Array;
+}
+
+const parseEntries = (entries: unknown): Array<Entry> => {
+  if (!entries || !isArray(entries)) {
+    throw new Error('Incorrect or missing entries');
+  }
+  return entries as Array<Entry>;
+}
 
 const parseName = (name: unknown): string => {
   if (!name || !isString(name)) {
@@ -57,15 +69,17 @@ type Fields = {
   ssn: unknown,
   gender: unknown,
   occupation: unknown,
+  entries: unknown
 }
 
-const toNewPatient = ({name, dateOfBirth, ssn, gender, occupation}: Fields): NewPatient => {
+const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatient => {
   return {
     name: parseName(name),
     dateOfBirth: parseDateOfBirth(dateOfBirth),
     ssn: parseSsn(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: parseEntries(entries)
   }
 }
 
