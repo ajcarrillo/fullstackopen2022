@@ -16,3 +16,20 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667
+
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+{
+  "date": "2022-07-10",
+  "description": "Laudantium asperior",
+  "healthCheckRating": 1,
+  "specialist": "Ut elit reprehender",
+  "type": "HealthCheck",
+  "diagnosisCodes": [
+    "M24.2",
+    "Z57.1"
+  ]
+}

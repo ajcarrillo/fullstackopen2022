@@ -4,7 +4,7 @@ export enum Gender {
   Other = "other"
 }
 
-export type NewPatient = Omit<IPatient, "id">
+export type NewPatient = Omit<IPatient, "id" | "entries">
 
 export interface IPatient {
   id: string
@@ -39,7 +39,7 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
